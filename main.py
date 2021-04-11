@@ -30,3 +30,8 @@ class Books():
                 books.append(book)
             except:
                 continue
+        return books
+
+book = input("Enter The Book Name >>> ")
+bookObject = Books(book)
+print(bookObject.getBooks())
