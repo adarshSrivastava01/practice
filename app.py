@@ -25,5 +25,9 @@ def info():
 def bye():
     return json({"bye": 404})
 
+@app.route("/signup", methods=["GET"])
+def login():
+    return "Hello"
+
 if __name__ == "__main__":
     app.run()
