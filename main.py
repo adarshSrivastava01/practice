@@ -32,6 +32,6 @@ class Books():
                 continue
         return books
 
-book = input("Enter The Book Name >>> ")
-bookObject = Books(book)
-print(bookObject.getBooks())
+# book = input("Enter The Book Name >>> ")
+# bookObject = Books(book)
+# print(bookObject.getBooks())
