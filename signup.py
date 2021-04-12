@@ -21,7 +21,7 @@ def Signup(name, email, password):
     print(userExists)
     print("-----------")
     if userExists:
-        return json({"message": "User with this email exists already!", "status_code": 301})
+        return {"message": "User with this email exists already!", "status_code": 301}
 
     # try:
     # print("Bcrypt Started")
@@ -34,7 +34,8 @@ def Signup(name, email, password):
     newUser = {
         "name": name,
         "email": email,
-        "password": password
+        "password": password,
+        "books": []
     }
     print(newUser)
     print("------", "Reached Here", "----------")

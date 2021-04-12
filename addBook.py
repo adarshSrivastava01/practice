@@ -1,8 +1,9 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 import urllib
 
-def Login(email, pwd):
-
+def AddBook(id, name, desc, image):
+    
     username = urllib.parse.quote_plus('adarsh')
     password = urllib.parse.quote_plus('adarsh123')
 
@@ -13,12 +14,17 @@ def Login(email, pwd):
     db = client.adarsh
     userCollection = db.user
 
-    userExists = userCollection.find_one({"email": email})
+    userExists = userCollection.find_one({"_id": ObjectId(id)})
 
     if not userExists:
         return {"message": "User doesn't exist, try again later.", "status_code": 404}
 
-    if userExists["password"] != pwd:
-        return {"message": "Invalid Credentials!!", "status_code": 401}
+    userExists["books"].append({
+        "name": name,
+        "desc": desc,
+        "image": image
+    })
 
-    return {"id": str(userExists["_id"]), "name": userExists["name"]}
+    r = userCollection.insert_one(userExists)
+
+    print(r)

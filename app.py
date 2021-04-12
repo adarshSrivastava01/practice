@@ -1,6 +1,9 @@
 from main import Books
 from signup import Signup
 from login import Login
+from getBooks import GetBooks
+from addBook import AddBook
+
 import flask
 import os
 from flask import request
@@ -48,6 +51,19 @@ def login():
     email = request.form['email']
     password = request.form['password']
     return json({"data": Login(email, password)})
+
+@app.route("/books", methods=["GET"])
+def getBooks():
+    Id = request.args.get("id")
+    return json({"data": GetBooks(Id)})
+
+@app.route("/addbook", methods=["PATCH"])
+def addBook():
+    Id = request.args.get("id")
+    name = request.form["name"]
+    desc = request.form["desc"]
+    image = request.form["image"]
+    return json({"data": AddBook(Id, name, desc, image)})
 
 if __name__ == "__main__":
     app.run()
