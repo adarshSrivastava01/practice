@@ -1,25 +1,49 @@
 from pymongo import MongoClient
 import urllib
+from flask import jsonify as json
+import bcrypt
 
-username = urllib.parse.quote_plus('adarsh')
-password = urllib.parse.quote_plus('adarsh123')
-
-URI = f'mongodb+srv://{username}:{password}@cluster0.dsmi2.mongodb.net/adarsh?retryWrites=true&w=majority'
-
-client = MongoClient(URI)
-
-db = client.adarsh
-userCollection = db.user
 
 def signup(name, email, password):
-    pass
 
-# userData = {
-#     "name": "Hello",
-#     "password": 1234,
-#     "email": "adarshsrivastava.tech@gmail.com"
-# }
+    username = urllib.parse.quote_plus('adarsh')
+    password = urllib.parse.quote_plus('adarsh123')
 
-# response = userCollection.insert_one(userData)
+    URI = f'mongodb+srv://{username}:{password}@cluster0.dsmi2.mongodb.net/adarsh?retryWrites=true&w=majority'
 
-# print(response.inserted_id)
+    client = MongoClient(URI)
+
+    db = client.adarsh
+    userCollection = db.user
+
+    userExists = userCollection.find_one({"email": email})
+    print("-----------")
+    print(userExists)
+    print("-----------")
+    if userExists:
+        return json({"message": "User with this email exists already!", "status_code": 301})
+
+    # try:
+    # print("Bcrypt Started")
+    # hashedPassword = bcrypt.hashpw(password, bcrypt.gensalt(12))
+    # print("Bcrypt Ended")
+    # print(hashedPassword, type(hashedPassword))
+    # except:
+    #     return json({"message": "Encryption Failed!!", "status_code": 401})
+
+
+
+
+    newUser = {
+        "name": name,
+        "email": email,
+        "password": password
+    }
+    print(newUser)
+    print("------", "Reached Here", "----------")
+    try:
+        response = userCollection.insert_one(newUser)
+        print("----------", response, "---------")
+        return {"id": str(response.inserted_id), "message": "User Created Succesfully.", "status_code": 200}
+    except:
+        return {"message": "Uploading to Database failed.", "status_code": 401}
