@@ -4,7 +4,7 @@ from flask import jsonify as json
 import bcrypt
 
 
-def signup(name, email, password):
+def Signup(name, email, password):
 
     username = urllib.parse.quote_plus('adarsh')
     password = urllib.parse.quote_plus('adarsh123')
@@ -30,9 +30,6 @@ def signup(name, email, password):
     # print(hashedPassword, type(hashedPassword))
     # except:
     #     return json({"message": "Encryption Failed!!", "status_code": 401})
-
-
-
 
     newUser = {
         "name": name,

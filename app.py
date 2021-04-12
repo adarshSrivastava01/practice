@@ -1,14 +1,11 @@
 from main import Books
-from signup import signup
+from signup import Signup
+from login import Login
 import flask
 import os
 from flask import request
 from flask_cors import CORS
 from flask import jsonify as json
-
-from pymongo import MongoClient
-import urllib
-import bcrypt
 
 app = flask.Flask(__name__)
 app_setting = os.getenv("APP_SETTINGS")
@@ -34,7 +31,7 @@ def bye():
 
 
 @app.route("/signup", methods=["POST"])
-def login():
+def signup():
     name = request.form['name']
     email = request.form['email']
     password = request.form['password']
@@ -44,7 +41,13 @@ def login():
         return json({"message": "Email Invalid", "status_code": 303})
     if len(password) < 8:
         return json({"message": "Password too short.", "status_code": 303})
-    return json({"data": signup(name, email, password)})
-    
+    return json({"data": Signup(name, email, password)})
+
+@app.route("/login", methods=["POST"])
+def login():
+    email = request.form['email']
+    password = request.form['password']
+    return json({"data": Login(email, password)})
+
 if __name__ == "__main__":
     app.run()
